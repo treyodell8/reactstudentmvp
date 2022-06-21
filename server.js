@@ -6,7 +6,7 @@ const pool = require('./db/db.js')
 
 // app.use(cors);
 
-const PORT = process.env.PORT || 3000
+const PORT = process.env.PORT || 8000
 
 app.use(express.json())
 
@@ -47,8 +47,9 @@ app.delete('/api/todos/:id', async (req, res) => {
 })
 
 app.patch('/api/todos/:id', async (req, res) => {
+    console.log(req.body)
     try {
-        const data = await pool.query("UPDATE todolist SET task = $1 WHERE id = $2;", [req.body.task, req.params.id])
+        const data = await pool.query(`UPDATE todolist SET task = '${req.body.task}' WHERE id = ${req.params.id};`)
         res.json(req.body)
     } catch (error) {
         console.error(error.message)

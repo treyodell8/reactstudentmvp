@@ -16,12 +16,27 @@ class Input extends React.Component {
     
     render() {
         
-        
+        const newTodo = (text) => {
+            const newText = {
+              task: text
+            }
+            
+            fetch('api/todos', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify(newText)
+            })
+            .then(res => res.json())
+            .catch(error => console.error(error.message))
+          }
 
         const handleAddTodo = (e) => {
             e.preventDefault()
             console.log(this.state.text)
-            this.props.newTodo(this.state.text)
+            newTodo(this.state.text)
+            window.location.reload()
         }
 
         const handleChange = (e) => {
@@ -35,7 +50,8 @@ class Input extends React.Component {
             <div className="input-field">
                 
                 <form onSubmit={handleAddTodo}>
-                    <input value={this.state.text}
+                    <input className="inputField"
+                    value={this.state.text}
                     placeholder="type a new todo"
                     type="text"
                     onChange={handleChange}></input>
